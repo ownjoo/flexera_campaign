@@ -54,28 +54,34 @@ def configure_logger(log_level: int = WARNING) -> None:
 def modify_retire_campaign_rest(
         session: Session,
         domain: str,
-        flexera_id: str = '',
-        group_id: str = '',
+        campaign_type: int,
+        flexera_id: str,
+        property_type: str,
+        property_name: str,
+        property_value: str,
+        property_display_name: str,
+        deployment_technology: str,
 ) -> str:
     try:
         url: str = f'{domain}/esd/api/Campaigns'
         data: list = [
             {
-                'campaignType': 3,
+                'campaignType': campaign_type,
                 'flexeraId': flexera_id,
-                'propertyType': 'Group',
-                'propertyName': 'memberOf',
-                'propertyValue': group_id,
+                'propertyType': property_type,
+                'propertyName': property_name,
+                'propertyValue': property_value,
+                'propertyDisplayName': property_display_name,
                 'visible': True,
                 'applyChildOU': False,
-                'propertyDisplayName': group_id,
+                'deploymentTechnology': deployment_technology,
             },
         ]
         resp_campaign: Response = session.post(
             url=url,
             params={
                 'flexeraid': flexera_id,
-                'CampaignType': 3,
+                'CampaignType': campaign_type,
             },
             json=data,
         )
@@ -112,8 +118,13 @@ def main(
         domain: str,
         username: str,
         password: str,
+        campaign_type: int,
         flexera_id: str,
-        group_id: str,
+        property_type: str,
+        property_name: str,
+        property_value: str,
+        property_display_name: str,
+        deployment_technology: str,
         proxies: Optional[dict] = None,
 ) -> list:
     session = Session()
@@ -127,7 +138,17 @@ def main(
     session.verify = False
 
     resp_campaign = create_retire_campaign_soap(session=session, domain=domain, flexera_id=flexera_id)
-    resp_modify = modify_retire_campaign_rest(session=session, domain=domain, flexera_id=flexera_id, group_id=group_id)
+    resp_modify = modify_retire_campaign_rest(
+        session=session,
+        domain=domain,
+        campaign_type=campaign_type,
+        flexera_id=flexera_id,
+        property_type=property_type,
+        property_name=property_name,
+        property_value=property_value,
+        property_display_name=property_display_name,
+        deployment_technology=deployment_technology,
+    )
 
     return [resp_campaign, resp_modify]
 
@@ -169,11 +190,46 @@ def get_cli_args() -> Namespace:
         help='The Flexera ID for the software package',
     )
     parser.add_argument(
-        '--group_id',
+        '--campaign_type',
+        default=3,
+        type=int,
+        required=False,
+        help='The type for the desired Campaign',
+    )
+    parser.add_argument(
+        '--property_type',
         default=None,
         type=str,
-        required=True,
-        help='The AD Group ID for the software campaign policy',
+        required=False,
+        help='The Property Type for the desired Policy',
+    )
+    parser.add_argument(
+        '--property_name',
+        default=None,
+        type=str,
+        required=False,
+        help='The Property Name for the desired Policy',
+    )
+    parser.add_argument(
+        '--property_value',
+        default=None,
+        type=str,
+        required=False,
+        help='The Property Value for the desired Policy',
+    )
+    parser.add_argument(
+        '--property_display_name',
+        default=None,
+        type=str,
+        required=False,
+        help='The Property Display for the desired Policy',
+    )
+    parser.add_argument(
+        '--deployment_technology',
+        default=None,
+        type=str,
+        required=False,
+        help='The Deployment Technology for the software package',
     )
     parser.add_argument(
         '--log_level',
@@ -209,8 +265,13 @@ if __name__ == '__main__':
             domain=args.domain,
             username=args.username,
             password=args.password,
+            campaign_type=args.campaign_type,
             flexera_id=args.flexera_id,
-            group_id=args.group_id,
+            property_type=args.property_type,
+            property_name=args.property_name,
+            property_value=args.property_value,
+            property_display_name=args.property_display_name,
+            deployment_technology=args.deployment_technology,
             proxies=proxies,
         ):
             try:
