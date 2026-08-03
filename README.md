@@ -1,4 +1,6 @@
 # flexera_campaign
+
+[![License](https://img.shields.io/github/license/ownjoo/flexera_campaign)](LICENSE)
 Create campaign (for software retirement)
 
 # SECURITY NOTE:
