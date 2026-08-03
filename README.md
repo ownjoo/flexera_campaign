@@ -1,6 +1,7 @@
 # flexera_campaign
 
 [![License](https://img.shields.io/github/license/ownjoo/flexera_campaign)](LICENSE)
+[![Top language](https://img.shields.io/github/languages/top/ownjoo/flexera_campaign)](https://github.com/ownjoo/flexera_campaign) [![Stars](https://img.shields.io/github/stars/ownjoo/flexera_campaign)](https://github.com/ownjoo/flexera_campaign/stargazers) [![Forks](https://img.shields.io/github/forks/ownjoo/flexera_campaign)](https://github.com/ownjoo/flexera_campaign/forks) [![Issues](https://img.shields.io/github/issues/ownjoo/flexera_campaign)](https://github.com/ownjoo/flexera_campaign/issues) [![Pull requests](https://img.shields.io/github/issues-pr/ownjoo/flexera_campaign)](https://github.com/ownjoo/flexera_campaign/pulls)
 Create campaign (for software retirement)
 
 # SECURITY NOTE:
